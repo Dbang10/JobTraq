@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class UserModel {
     @Indexed
     private String email;
     private String password;
-    private boolean active;
     private String role;
     private List<String> appliedJobIds = new ArrayList<>();
 

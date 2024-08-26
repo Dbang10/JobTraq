@@ -1,7 +1,6 @@
 package com.adp.JobTraq.services;
 
 import com.adp.JobTraq.repository.UserRepository;
-import com.adp.JobTraq.entity.AuthUser;
 import com.adp.JobTraq.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,7 +54,7 @@ public class UserService implements UserDetailsService {
             return User.builder()
                     .username(authUser.get().getEmail())
                     .password(authUser.get().getPassword())
-                    .disabled(!authUser.get().isActive())
+                    // .disabled(!authUser.get().isActive())
                     .build();
         }
     }

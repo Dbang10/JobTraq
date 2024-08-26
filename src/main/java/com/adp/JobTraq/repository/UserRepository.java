@@ -1,10 +1,7 @@
 package com.adp.JobTraq.repository;
 
-import com.adp.JobTraq.entity.AuthUser;
 import com.adp.JobTraq.models.UserModel;
-
 import java.util.Optional;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
