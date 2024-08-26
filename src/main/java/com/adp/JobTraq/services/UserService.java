@@ -1,14 +1,21 @@
 package com.adp.JobTraq.services;
 
 import com.adp.JobTraq.repository.UserRepository;
+import com.adp.JobTraq.entity.AuthUser;
 import com.adp.JobTraq.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import org.springframework.security.core.userdetails.User;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -37,5 +44,19 @@ public class UserService {
 
     public List<UserModel> getAllUsers(){
         return (List<UserModel>) userRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<UserModel> authUser = userRepository.findByEmail(email.toLowerCase());
+        if (!authUser.isPresent()) {
+            throw new UsernameNotFoundException(email);
+        } else {
+            return User.builder()
+                    .username(authUser.get().getEmail())
+                    .password(authUser.get().getPassword())
+                    .disabled(!authUser.get().isActive())
+                    .build();
+        }
     }
 }
