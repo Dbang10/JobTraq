@@ -1,4 +1,4 @@
-package com.adp.JobTraq.controller;
+package com.adp.JobTraq.controllers;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adp.JobTraq.models.JobApplication;
-import com.adp.JobTraq.repository.JobApplicationRepository;
-import com.adp.JobTraq.service.JobApplicationService;
+import com.adp.JobTraq.repositories.JobApplicationRepository;
+import com.adp.JobTraq.services.JobApplicationService;
 
 @RestController
 @RequestMapping("/api/job-applications")
