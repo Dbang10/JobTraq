@@ -1,4 +1,4 @@
-package com.adp.JobTraq.repositories;
+package com.adp.JobTraq.repository;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adp.JobTraq.models.JobApplication;
-import com.adp.JobTraq.repositories.JobApplicationRepository;
+import com.adp.JobTraq.repository.JobApplicationRepository;
 import com.adp.JobTraq.services.JobApplicationService;
 
 @RestController

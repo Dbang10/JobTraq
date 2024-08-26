@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.adp.JobTraq.models.JobApplication;
-import com.adp.JobTraq.repositories.JobApplicationRepository;
+import com.adp.JobTraq.repository.JobApplicationRepository;
 
 @Service
 public class JobApplicationService {
