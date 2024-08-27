@@ -1,9 +1,12 @@
 package com.adp.JobTraq.controllers;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.adp.JobTraq.repository.UserRepository;
 import com.adp.JobTraq.models.UserModel;
 import com.adp.JobTraq.services.UserService;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +19,29 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
+    @Autowired
+    private final UserRepository userRepository;
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
     public UserController(UserService userService) {
         this.userService = userService;
+        this.userRepository = null;
+        this.passwordEncoder = null;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@RequestBody UserModel user){
+        try {
+            if (userRepository.findByEmail(user.getName()).isPresent())
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already taken. Please try again");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            UserModel save = userRepository.save(user);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @PostMapping("/create")
