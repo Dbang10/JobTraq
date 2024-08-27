@@ -1,7 +1,6 @@
 package com.adp.JobTraq.controllers;
 
 import com.adp.JobTraq.models.JobOpening;
-import com.adp.JobTraq.models.UserModel;
 import com.adp.JobTraq.services.JobOpeningService;
 import com.adp.JobTraq.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -19,52 +18,83 @@ public class JobOpeningController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<JobOpening> createJobOpening(@RequestBody JobOpening jobOpening) {
-        JobOpening savedJob = jobOpeningService.createJob(jobOpening);
-        return ResponseEntity.ok(savedJob);
+    public ResponseEntity<?> createJobOpening(@RequestBody JobOpening jobOpening) {
+        try {
+            JobOpening savedJob = jobOpeningService.createJob(jobOpening);
+            return ResponseEntity.ok(savedJob);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to create job");
+        }
     }
 
     @GetMapping("/getall")
-    public List<JobOpening> getAllJobs() {
-        return jobOpeningService.getAllJobs();
+    public ResponseEntity<?> getAllJobs() {
+        try {
+            List<JobOpening> jobs = jobOpeningService.getAllJobs();
+            return ResponseEntity.ok(jobs);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<JobOpening> getJob(@PathVariable String id) {
-        JobOpening job = jobOpeningService.findById(id);
-        if(job != null) {
-            return ResponseEntity.ok(job);
-        }else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getJob(@PathVariable String id) {
+        try {
+            JobOpening job = jobOpeningService.findById(id);
+            if (job != null) {
+                return ResponseEntity.ok(job);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<JobOpening> updateJob(@PathVariable String id,@RequestBody JobOpening updatedJob) {
-        JobOpening job = jobOpeningService.updateJob(id, updatedJob);
-        if (job != null) {
-            return ResponseEntity.ok(job);
-        }
-        else{
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> updateJob(@PathVariable String id,@RequestBody JobOpening updatedJob) {
+        try {
+            JobOpening job = jobOpeningService.updateJob(id, updatedJob);
+            if (job != null) {
+                return ResponseEntity.ok(job);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteJob(@PathVariable String id) {
-        jobOpeningService.deleteJob(id);
+    public ResponseEntity<?> deleteJob(@PathVariable String id) {
+        try {
+            jobOpeningService.deleteJob(id);
+            return ResponseEntity.ok("Deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<JobOpening>> searchJobOpeningsByTitle(@RequestParam String title) {
-        List<JobOpening> jobOpenings = jobOpeningService.searchJobsByTitle(title);
-        return ResponseEntity.ok(jobOpenings);
+    public ResponseEntity<?> searchJobOpeningsByTitle(@RequestParam String title) {
+        try {
+            List<JobOpening> jobOpenings = jobOpeningService.searchJobsByTitle(title);
+            return ResponseEntity.ok(jobOpenings);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/status")
-    public ResponseEntity<List<JobOpening>> getJobOpeningsByStatus(@RequestParam String status) {
-        List<JobOpening> jobOpenings = jobOpeningService.getJobsByStatus(status);
-        return ResponseEntity.ok(jobOpenings);
+    public ResponseEntity<?> getJobOpeningsByStatus(@RequestParam String status) {
+        try {
+            List<JobOpening> jobOpenings = jobOpeningService.getJobsByStatus(status);
+            return ResponseEntity.ok(jobOpenings);
+        } catch(Exception e) {
+            System.err.println("Error occurred: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Failed to retrieve jobs: " + e.getMessage());
+        }
     }
+
 
 }
