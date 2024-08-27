@@ -28,6 +28,9 @@ public class JobApplication {
     @Field(name = "user_id")
     private String userId;
 
+    @Field(name = "name")
+    private String name;
+
     @Field(name = "applicant_state")
     private String applicantState;
 
