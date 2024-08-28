@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
@@ -43,6 +44,8 @@ public class UserController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
+
+
 
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UserModel user) {
@@ -104,6 +107,16 @@ public class UserController {
             }
         }catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to get all Users");
+        }
+    }
+
+    @PatchMapping("/{userId}/apply/{jobId}")
+    public ResponseEntity<?> applyForJob(@PathVariable String userId, @PathVariable String jobId) {
+        boolean isApplied = userService.addJobToAppliedJobs(userId, jobId);
+        if (isApplied) {
+            return ResponseEntity.ok("Job application updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or job not found or job already applied.");
         }
     }
 
