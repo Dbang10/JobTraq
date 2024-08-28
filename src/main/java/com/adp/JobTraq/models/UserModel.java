@@ -21,17 +21,6 @@ public class UserModel {
     private String email;
     private String password;
     private String role;
-//    private List<String> appliedJobIds = new ArrayList<>();
+    private List<String> appliedJobIds = new ArrayList<>();
 
-    // Public constructor with parameters
-    public UserModel(String id, String name, String email, String password, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-    // Default constructor
-    public UserModel() {}
 }

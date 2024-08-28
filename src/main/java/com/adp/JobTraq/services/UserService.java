@@ -6,17 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.core.userdetails.User;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserModel createUser(UserModel newUser) {
         return (UserModel) userRepository.save(newUser);
@@ -41,7 +47,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    public List<UserModel> getAllUsers(){
+    public List<UserModel> getAllUsers() {
         return (List<UserModel>) userRepository.findAll();
     }
 
@@ -58,4 +64,24 @@ public class UserService implements UserDetailsService {
                     .build();
         }
     }
+
+    public boolean addJobToAppliedJobs(String userId, String jobId) {
+        Optional<UserModel> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            UserModel user = userOptional.get();
+            if (user.getAppliedJobIds() == null) {
+                user.setAppliedJobIds(new ArrayList<>()); // Initialize if null
+            }
+            if (!user.getAppliedJobIds().contains(jobId)) {
+                user.getAppliedJobIds().add(jobId);
+                userRepository.save(user);
+                return true;
+            } else {
+                return false; // Job already applied
+            }
+        }
+        return false; // User not found
+    }
 }
+
+
